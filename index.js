@@ -31,17 +31,27 @@ app.patch("/users/:id", (req, res) => {
 });
 app.delete("/users/:id", (req, res) => {
     const id = Number(req.params.id);
-    const user = users.find((user) => user.id === id);
-    const index = users.indexOf(user);
-    users.splice(index,1);
-    fs.writeFile("./MOCK_DATA.json",JSON.stringify(users),(err)=>{
-        if(err){
-            console.log(err);
-        }
-    })
-    return res.json(users);
+    const userIndex = users.findIndex((user) => user.id === id);
 
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+
+        for (let i = userIndex; i < users.length; i++) {
+            users[i].id = i + 1;
+        }
+
+        fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+
+        return res.json(users);
+    } else {
+        return res.status(404).json({ error: "User not found" });
+    }
 });
+
 
 app.post("/users", (req, res) => {
     const body = req.body;
