@@ -1,4 +1,8 @@
 import express, { Express, Request, Response } from "express";
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerOptions from './swaggerOptions';
+
 const fs = require("fs");
 const app: Express = express();
 const port: number = 8000;
@@ -32,6 +36,7 @@ interface PatchUserRequestBody {
   gender: string;
   id?: number;
 }
+
 
 app.patch("/users/:id", (req: Request, res: Response) => {
   const id = Number(req.params.id);
@@ -131,6 +136,10 @@ app.post("/users", (req: Request, res: Response) => {
     return res.status(400).json({ error: "Invalid user data" });
   }
 });
+
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 
 app.listen(port, () =>

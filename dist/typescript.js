@@ -4,6 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swaggerOptions_1 = __importDefault(require("./swaggerOptions"));
 const fs = require("fs");
 const app = (0, express_1.default)();
 const port = 8000;
@@ -107,4 +110,6 @@ app.post("/users", (req, res) => {
         return res.status(400).json({ error: "Invalid user data" });
     }
 });
+const specs = (0, swagger_jsdoc_1.default)(swaggerOptions_1.default);
+app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(specs));
 app.listen(port, () => console.log(`Server is running on port http://localhost:${port}`));
