@@ -8,7 +8,7 @@ const swaggerOptions: Options = {
       description: 'Documentation for Rest API',
     },
   },
-  apis: ['./dist/typescript.js'], // Adjust the path to match your TypeScript files
+  apis: ['./typescript.ts'], // Update this line
 };
 
 export default swaggerOptions;

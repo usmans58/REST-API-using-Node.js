@@ -8,6 +8,6 @@ const swaggerOptions = {
             description: 'Documentation for Rest API',
         },
     },
-    apis: ['./dist/typescript.js'], 
+    apis: ['./typescript.ts'], // Update this line
 };
 exports.default = swaggerOptions;

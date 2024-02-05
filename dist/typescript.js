@@ -13,14 +13,62 @@ const port = 8000;
 const users = require("../MOCK_DATA.json");
 //app.use(express.urlencoded({ extended: true }));
 app.use(express_1.default.json());
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     description: Get all users
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 app.get("/users", (req, res) => {
     return res.json(users);
 });
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     description: Get user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 app.get("/users/:id", (req, res) => {
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
     return res.json(user);
 });
+/**
+ * @swagger
+ * /users/{id}:
+ *   patch:
+ *     description: Update user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       description: Updated user information
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PatchUserRequestBody'
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 app.patch("/users/:id", (req, res) => {
     const id = Number(req.params.id);
     const body = req.body;
@@ -68,6 +116,22 @@ app.patch("/users/:id", (req, res) => {
     }
     return res.json(users);
 });
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     description: Delete user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 app.delete("/users/:id", (req, res) => {
     const id = Number(req.params.id);
     // Check if id is a valid number
@@ -91,6 +155,22 @@ app.delete("/users/:id", (req, res) => {
         return res.status(404).json({ error: "User not found" });
     }
 });
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     description: Create a new user
+ *     requestBody:
+ *       description: User information for creation
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 app.post("/users", (req, res) => {
     const body = req.body;
     // Check if the received data adheres to the User interface
